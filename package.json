@@ -1,7 +1,7 @@
 {
   "name": "svelte-basic",
   "description": "A basic Svelte template for uibuilder and Node-RED.",
-  "version": "1.0.0",
+  "version": "7.3.0",
   "private": true,
   "scripts": {
     "build": "rollup -c --bundleConfigAsCjs --environment NODE_ENV:production",

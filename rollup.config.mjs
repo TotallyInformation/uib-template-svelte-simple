@@ -5,6 +5,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import livereload from 'rollup-plugin-livereload'
 import terser from '@rollup/plugin-terser'
 import css from 'rollup-plugin-css-only'
+import copy from 'rollup-plugin-copy'
 
 // Added for uibuilder - the build output folder
 const uibDist = 'dist'
@@ -13,7 +14,8 @@ const uibDist = 'dist'
 const production = !process.env.ROLLUP_WATCH
 console.log(`Production mode?: ${ production }. Output Folder: ${__dirname}/${uibDist}/build/`) // eslint-disable-line no-undef
 
-/** Define the dev server
+/** Define the dev server - this works correctly with uibuilder and Node-RED to
+ *  automatically reload the browser when the bundle is updated.
  * @returns {Function} writeBundle
  */
 function serve() {
@@ -38,11 +40,16 @@ function serve() {
 }
 
 export default {
+    // The source entry point for the app, it references src/App.svelte
     input: 'src/main.js',
     output: {
+        // Produce js source maps for easier browser debugging
         sourcemap: true,
+        // Use IIFE (script) style output for browser rather than ESM
         format: 'iife',
+        // The name for the Svelte app
         name: 'app',
+        // The output, bundled js
         file: `${uibDist}/build/bundle.js`,
     },
     plugins: [
@@ -53,7 +60,8 @@ export default {
             }
         }),
         // we'll extract any component CSS out into
-        // a separate file - better for performance
+        // a separate file - better for performance.
+        // There is also a master global CSS file.
         css({ output: 'bundle.css' }),
 
         // If you have external dependencies installed from
@@ -78,7 +86,7 @@ export default {
         // If we're building for production (npm run build
         // instead of npm run dev), minify
         production && terser({
-            ecma: 2015, // ES6
+            ecma: 2019, // ES6+ (matches spec of UIBUILDER FE code)
             mangle: { toplevel: true },
             compress: {
                 module: true,
@@ -88,6 +96,18 @@ export default {
                 drop_debugger: production,
             },
             output: { comments: false } ,
+        }),
+
+        copy({
+            targets: [
+                // Master HTML file
+                { src: 'src/index.html', dest: 'dist' },
+                // Master CSS file
+                { src: 'src/global.css', dest: 'dist' },
+                // Favicon
+                { src: 'src/favicon.png', dest: 'dist' }
+            ],
+            copyOnce: false, // Set to false to copy on every build (dev mode)
         }),
     ],
     watch: {

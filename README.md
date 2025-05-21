@@ -2,6 +2,33 @@
 
 This is a very simple template for using the [Svelte](https://svelte.dev/) front-end framework with uibuilder and Node-RED. It was originally created from Svelte's https://github.com/sveltejs/template template.
 
+## Getting Started
+
+You could manually copy the template folders into your uibuilder instance root folder but it is much easier to use the built-in template manager in uibuilder. This will copy the template into your uibuilder instance and set it up for you. This template is available in the uibuilder template manager as `Svelte Simple`. To install it, go to the uibuilder node in Node-RED and select the `Svelte Simple` template from the dropdown list. This will copy the template into your uibuilder instance and set it up for you.
+
+Once loaded into your uibuilder instance, no updattes will be made to the template files by uibuilder. If you want to update the template, you can do so by re-doing the installation. Of course, this will overwrite all files of the same name so if you want to retain anything you have done, make a copy first.
+
+As this template uses [Svelte](https://svelte.dev/) as the front-end framework, you will need to install the development dependencies. To do this, run the following from the instance root folder:
+
+```bash
+npm install
+```
+
+This will install all of the required dependencies for Svelte and Rollup. You can also install any other npm packages you want to use in your app.
+
+The template requires a build step and therefore you need to change the uibuilder node settings to use the `dist` folder as the source folder. This is done in the advanced settings of the uibuilder node. The `dist` folder is where the built files will be served from. The template is distributed with the `dist` folder already populated so you can use it immediately. However, if you change anything, you will need to run the build step again.
+
+```bash
+npm run build
+```
+
+
+
+
+## UI
+
+tbc
+
 ## Folders and Files
 
 The root folder contains this file. It can be used for other things **but** it will not be served up in the Node-RED web server.

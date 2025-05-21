@@ -1,7 +1,9 @@
-<main>
+<header>
 	<h1 class="with-subtitle">uibuilder + Svelte</h1>
-    <div role="doc-subtitle">Using the uibuilder IIFE library.</div>
+	<div role="doc-subtitle">Using the uibuilder IIFE library.</div>
+</header>
 
+<main>
 	<div id="more"><!-- '#more' is used as a parent for dynamic HTML content in examples --></div>
 
 	<p title="A dynamic greeting that can be update using a msg from Node-RED">{myGreeting}</p>

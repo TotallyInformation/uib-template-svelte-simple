@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c --bundleConfigAsCjs --environment NODE_ENV:production",
-    "dev": "rollup -c --bundleConfigAsCjs -w --environment NODE_ENV:development",
+    "dev": "rollup -c -w --bundleConfigAsCjs --environment NODE_ENV:development",
     "start": "sirv dist --no-clear"
   },
   "devDependencies": {
@@ -13,7 +13,6 @@
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-terser": "^0.4.4",
     "rollup": "^4.20.0",
-    "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-css-only": "^4",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.2.0",

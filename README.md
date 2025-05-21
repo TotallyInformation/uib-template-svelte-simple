@@ -6,7 +6,9 @@ This is a very simple template for using the [Svelte](https://svelte.dev/) front
 
 You could manually copy the template folders into your uibuilder instance root folder but it is much easier to use the built-in template manager in uibuilder. This will copy the template into your uibuilder instance and set it up for you. This template is available in the uibuilder template manager as `Svelte Simple`. To install it, go to the uibuilder node in Node-RED and select the `Svelte Simple` template from the dropdown list. This will copy the template into your uibuilder instance and set it up for you.
 
-Once loaded into your uibuilder instance, no updattes will be made to the template files by uibuilder. If you want to update the template, you can do so by re-doing the installation. Of course, this will overwrite all files of the same name so if you want to retain anything you have done, make a copy first.
+Once loaded into your uibuilder instance, no updates will be made to the template files by uibuilder. If you want to update the template, you can do so by re-doing the installation. Of course, this will overwrite all files of the same name so if you want to retain anything you have done, make a copy first.
+
+### Template preparation
 
 As this template uses [Svelte](https://svelte.dev/) as the front-end framework, you will need to install the development dependencies. To do this, run the following from the instance root folder:
 
@@ -16,87 +18,25 @@ npm install
 
 This will install all of the required dependencies for Svelte and Rollup. You can also install any other npm packages you want to use in your app.
 
-The template requires a build step and therefore you need to change the uibuilder node settings to use the `dist` folder as the source folder. This is done in the advanced settings of the uibuilder node. The `dist` folder is where the built files will be served from. The template is distributed with the `dist` folder already populated so you can use it immediately. However, if you change anything, you will need to run the build step again.
+### Serve `dist` not `src`
+
+The template requires a build step and therefore you need to change the uibuilder node settings to use the `dist` folder as the source folder. This is done in the advanced settings of the uibuilder node. The `dist` folder is where the built files will be served from. The template is distributed with the `dist` folder already populated so you can use it immediately. 
+
+### Development
+
+Note that the template is configured to use an HTML element (in `src/index.html`) with the id `app` as the root element for the Svelte app. This is where the Svelte app will be mounted. You can change this if you want but you will need to change it in `index.html`, `main.js` and `rollup.config.js` to match.
+
+As you start to develop your app, you can run the development server by running the following command from the instance root folder:
 
 ```bash
 npm run build
 ```
 
+This creates a background task that watches for changes in the `src` folder and automatically rebuilds the `dist` folder when changes are detected. 
 
+If you have the page open in your browser, it will automatically reload when changes are made. This is a great way to develop your app as you can see the changes immediately.
 
-
-## UI
-
-tbc
-
-## Folders and Files
-
-The root folder contains this file. It can be used for other things **but** it will not be served up in the Node-RED web server.
-_Either_ the `src` or the `dist` folder are served up (along with all of their sub-folders). So the root and any other root sub-folders
-can be used mostly however you like. In the case of Svelte, you need to use the `dist` folder, this is configured in the advanced settings of the uibuilder node.
-
-One reserved item in the root folder is the `package.json` file. This is used to configure what other npm packages are needed in order to build and change Svelte-based apps.
-
-Folder list:
-
-* `dist/` - contains the files that will be served to your browser client.
-  
-  * `dist/build/` - contains the built JavaScript and CSS files and a map file for debugging. The bundle files are used in the 
-    
-    * `dist/build/bundle.js` - The "compiled" JavaScript which is minimised for efficiency. Load this into your index.html file. This bundle contains all the required code for the UI except for the uibuilder client library (it can be bundled but it is generally easier not too because if you do, you have to take on responsibility for maintaining the correct versions when uibuilder gets updated).
-    * `dist/build/bundle.css` - The "compiled" CSS which is minimised for efficiency. Load this into your index.html file.
-    * `dist/build/bundle.js.map` - A debugging map file that your browser dev tools can use. No need to put this into your index.html.
-  
-  * `dist/index.html` - Contains your basic HTML and will be the file loaded and displayed in the browser when going to the uibuilder defined URL.
-
-    Note that in this example, this file simply loads the other resources and sets some metadata. It does _not_ actually contain your UI. The UI is generated by Svelte dynamically.
-
-  * `dist/global.css` - (optional) Contains any CSS you want made available to ALL Svelte components.
-
-* `src/` - contains the source files that Svelte will "build" into your live files in `dist`. Notice that there are a lot more files in this folder than in `dist` because the Svelte build process "bundles" a lot of them together for efficiency.
-
-    In this case, only 2 files exist:
-
-    * `src/main.js` - This is a very simple script that loads the main app.
-    * `src/App.svelte` - This is the definition of your UI.
-
-* `scripts` - utility scripts.
-
-* `/` - The root folder for the uibuilder instance
-
-   * `README.md` - This description file - it is good practice to have a README.md in the root describing everything.
-   * `package.json` - The `npm` package file. It defines what dev dependencies are required along with some scripts to do builds, run the dev server, etc.
-   * `rollup.config.js` - Rollup is the tool used by Svelte to build the output `dist` files. This determines the configuration including specifying the input and output folders.
-   * `.eslintrc.js` - Configuration of the ESLINT tool that is strongly recommended when developing. It will find lots of silly errors and help keep code consistently written.
-   * `.gitignore` - Tells the GIT code management tool to ignore certain files. Also ensures that those files don't get pushed to GitHub.
-
-Also note that you can use **linked** folders and files in this folder structure. This can be handy if you want to maintain your code in a different folder somewhere.
-
-## Making changes
-
-You will normally only need to make changes to `src/App.svelte`. It is this file that defines your UI in this simple example. Of course, you could also make changes in `dist/index.html` if you want but currently, the Svelte app is being loaded to the `body` tag of the html so all of your UI is dynamic.
-
-As your UI gets more complex, it is best to create multiple custom Svelte components. Each of these will be in its own .svelte file and will define a single custom HTML tag.
-
-### Prerequisites
-
-Before making any changes to this template code, you need to install the development dependencies. To do this, run the following from the instance root folder:
-
-```bash
-npm install
-```
-
-### Development
-
-Before you start making changes to the svelte files, you should start [Rollup](https://rollupjs.org) by running the following command from the instance root folder:
-
-```bash
-npm run dev
-```
-
-This will keep running in the background and any change that you save will be immediately reflected in your front-end browser tab. Note that this works even though you are viewing the output using the Node-RED/uibuilder server and not the dev server. Using node-red/uibuilder will ensure that all of the resource URL's and communications work correctly.
-
-So in this case, you are only using the Rollup dev server purely to do the dynamic rebuild and to tell the front-end to reload on changes.
+If you're using [Visual Studio Code](https://code.visualstudio.com/) it is recommended to install the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
 
 ### Production
 
@@ -105,10 +45,72 @@ Once you have finished your development, you should stop the dev server and run 
 ```bash
 npm run build
 ```
+This will create an optimised version of your code in the `dist` folder.
 
-This will create an optimised version of your code.
+## UI
 
----------
+The template shows a simple UI with a card showing 2 dynamic outputs. The first of which can be changed by sending a message to the uibuilder node containing a `msg.greeting` string. They are examples of how to use dynamic data in the Svelte app.
 
-If you're using [Visual Studio Code](https://code.visualstudio.com/) it is recommended to install the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
+There is a form card containing 3 inputs and a button that uses the `uibuilder.eventSend(event)` function to send a message to the Node-RED. The message will contain the values of the inputs as `msg.payload` as well as extended form data in `msg._ui`. This is a simple way to send data from your UI to Node-RED.
+
+Finally, there is another button that uses the `uibuilder.send(msg)` function to send a custom message back to Node-RED. This is a simple way to send any custom data from your UI to Node-RED.
+
+## Folders
+
+* `/` - The root folder contains this file. It can be used for other things **but** it will not be served up in the Node-RED web server. 
+* `/src/` - the default folder that serves files as web resources. However, this can be changed to a different folder if desired.
+* `/dist/` - the default folder for serving files as web resources where a build step is used. In that case, the `/src` folder is the source used by the build tool and `/dist` is the destination for the build (the "distribution" folder).
+* `/routes/` - This folder can contain `.js` files defining routing middleware for uibuilder's ExpressJS web server.
+* `/api/` - This folder can contain `.js` files defining REST API's specific to this uibuilder instance.
+* `/types/` - Contains typescript definition files (`*.d.ts`) for the uibuilder client library. This is not used by uibuilder but can be used by your IDE to provide type checking and auto-completion for the uibuilder client library. This is useful if you are using TypeScript or JavaScript with type checking enabled. Remember to update these for new uibuilder versions.
+
+The above folders will all pre-exist for the built-in uibuilder templates. The folders can safely be removed if not needed but one folder must exist to serve the web resources from (this cannot be the root folder).
+
+The template only has files in the root and `src` folders. The `src` folder is the default used by uibuilder to serve up files to clients.
+
+One reserved item in the root folder however will be a `package.json` file. This will be used in the future to help with build/compile steps. You can still use it yourself, just bear in mind that a future version of uibuilder will make use it as well. If you need to have any development packages installed to build your UI, don't forget to tell `npm` to save them as development dependencies not normal dependencies.
+
+The `dist` folder should be used if you have a build step to convert your source code to something that browsers understand. So if you are using a build (compile) step to produce your production code, ensure that it is configured to use the `dist` folder as the output folder and that it creates at least an `index.html` file.
+
+You can switch between the `src` and `dist` (or other) folders using the matching setting in the Editor. See uibuilder's advanced settings tab.
+
+Also note that you can use **linked** folders and files in this folder structure. This can be handy if you want to maintain your code in a different folder somewhere or if your default build process needs to use sub-folders other than `src` and `dist`.(Though as of v6, you can specify any sub-folder to be served)
+
+## Files in this template
+
+* `package.json`: REQUIRED. Defines the basic structure, name, description of the project and defines any local development dependencies if any. Also works with `npm` allowing the installation of dev packages (such as build or linting tools).
+* `README.md`: This file. Change this to describe your web app and provide documentation for it.
+* `LICENSE`: A copy of the Apache 2.0 license. Replace with a different license if needed. Always license your code. Apache 2.0 matches the licensing of uibuilder.
+* `tsconfig.json`: A configuration file for TypeScript. This can be used by your IDE to provide descriptions, type checking and auto-completion for the uibuilder client library. This is useful if you are using TypeScript or JavaScript with type checking enabled. Uses the typescript definition files in the `/types` folder, remember to update these for new uibuilder versions.
+
+* `src/index.html`: Contains the static HTML that hosts your Svelte app. It is required.
+* `src/main.js`: Is the entry point for your Svelte app. It is required.
+* `src/index.css`: The master CSS for styling. Linked to in the html file. Also imports the Svelte app's CSS.
+* `src/App.svelte`: The main Svelte app. This defines the core Svelte app. It is required.
+
+* `dist/index.html`: The live version of the `src/index.html` file.
+* `dist/index.css`: The live version of the `src/index.css` file.
+* `dist/build/bundle.js`: The built version of the Svelte app.
+* `dist/build/bundle.css`: The built version of the Svelte app's CSS.
+* `dist/build/bundle.js.map`: The source map for the built version of the Svelte app. This is used for debugging and is optional.
+
+## Multiple HTML pages
+
+uibuilder will happily serve up any number of web pages from a single instance. It will also make use of sub-folders. However, each folder should have an `index.html` file so that a URL that ends with the folder name will still work without error.
+
+Note that each html file is a separate page and requires its own JavaScript and uibuilder library reference. When moving between pages, remember that every page is stand-alone, a new environment. You can share one `index.js` file between multiple pages if you prefer but each page will run a separate instance. Moving the library processing to a web worker may allow sharing of connections, this will be explored in the future.
+
+If multiple pages are connected to the same uibuilder instance, they will all get the same broadcast messages from Node-RED. So if you want to handle different messages on different pages, remember to filter them in your front-end JavaScript in `uibuilder.onChange('msg', ....)` function. Turn on the advanced flag for including a `msg._uib` property in output if you need to differentiate between pages and/or clients in Node-RED.
+
+## URL endpoints
+
+When specifying links in your HTML, CSS and JavaScript files, you should use relative URLs. e.g. `./index.js` will load that file from the `src` folder or wherever else you have told uibuilder to use.
+
+When using uibuilder's server-side resources, you will generally use `../uibuilder/....`, for example `../uibuilder/uib-brand.min.css` as seen in the default `index.css` file. When accessing a front-end library being served by uibuilder, you can use the form `../uibuilder/vendor/....`. Use the "Full details" button in the uibuilder node to see all of the possible endpoints you may want to use.
+
+## License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
+This template may be used however you like. It is provided as a test template for uibuilder and is not intended to be a full template. You are free to use it as a starting point for your own template or to use it as-is if you find it useful.
 

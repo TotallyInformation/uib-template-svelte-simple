@@ -1,13 +1,28 @@
 <header>
-	<h1 class="with-subtitle">uibuilder + Svelte</h1>
+	<h1 class="with-subtitle">UIBUILDER for Node-RED + Svelte</h1>
 	<div role="doc-subtitle">Using the uibuilder IIFE library.</div>
 </header>
 
 <main>
 	<div id="more"><!-- '#more' is used as a parent for dynamic HTML content in examples --></div>
 
-	<p title="A dynamic greeting that can be update using a msg from Node-RED">{myGreeting}</p>
-	<p title="Some other dynamic property that main.js might update">{anotherProp}</p>
+	<article>
+		<div>
+			Five files in the <code>src</code> folder are used to create this page:
+			<ul>
+				<li><code>App.svelte</code> - defines the dynamic page HTML, CSS and JS.</li>
+				<li><code>main.js</code> - the controlling JavaScript file that loads the app and sets data properties.</li>
+				<li><code>index.html</code> - the static HTML file that hosts everything.</li>
+				<li><code>global.css</code> - the static CSS file that is used by all components.</li>
+				<li><code>favicon.png</code> - the favicon used by the app.</li>
+			</ul>
+		</div>
+		<hr>
+		<p>A dynamic greeting initially set in <code>App.svelte</code>, can be updated using a msg from Node-RED:<p>
+		<p style="background-color:var(--surface1)">{myGreeting}</p>
+		<p>Another dynamic property set in <code>main.js</code> this time:</p>
+		<p style="background-color:var(--surface1)">{anotherProp}</p>
+	</article>
 
 	<!-- A form is an easy way to input data to send to Node-RED -->
 	<form>
@@ -17,8 +32,19 @@
 
 		<div><!-- Accessible form element -->
 			<label for="quickMsg">Quick Message:</label>
-			<!-- onchange is optional, it saves the previous value of the field -->
+			<!-- onchange/onfocus is optional, they save the previous value of the field -->
 			<input id="quickMsg" value="A message from the browser" onchange="this.uib_newValue = this.value" onfocus="this.uib_oldValue = this.value">
+		</div>
+
+		<div>
+			<label for="userName">Your Name:</label>
+			<input id="userName" placeholder="Enter your name">
+		</div>
+
+		<div>
+			<label for="userAge">Your Age: <output id="ageValue">30</output></label>
+			<input id="userAge" type="range" min="10" max="110" value="30" step="1" 
+				oninput="$('#ageValue').textContent = this.value">
 		</div>
 
 		<div>
@@ -33,7 +59,7 @@
 
 	<!-- Another way to send custom data back to Node-RED. fnSendToNR is defined in index.js,
 		it uses the standard `uibuilder.send` function -->
-	<button on:click={ e => sendToNR('A message from the sharp end!') } type="button">Send a msg back to Node-RED using a custom function and uibuilder.send</button>
+	<button on:click={ e => sendToNR('A message from the sharp end!') } type="button">Send a msg back to Node-RED using a custom function and <code>uibuilder.send</code></button>
 
 </main>
 
@@ -47,7 +73,6 @@
 
 <script>
 	// @ts-nocheck
-	// NOTE: uibuilder.start() is not needed when using the new client builds - even when using Svelte's standard for the dev server.
 	
 	/** This .svelte file is the master, top-level App. Use it to define everything else.
 	 * It is treated as a module so no need to 'use strict' and you can use the import statement.

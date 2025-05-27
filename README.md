@@ -53,7 +53,13 @@ The template shows a simple UI with a card showing 2 dynamic outputs. The first 
 
 There is a form card containing 3 inputs and a button that uses the `uibuilder.eventSend(event)` function to send a message to the Node-RED. The message will contain the values of the inputs as `msg.payload` as well as extended form data in `msg._ui`. This is a simple way to send data from your UI to Node-RED.
 
-Finally, there is another button that uses the `uibuilder.send(msg)` function to send a custom message back to Node-RED. This is a simple way to send any custom data from your UI to Node-RED.
+There is then another button that uses the `uibuilder.send(msg)` function to send a custom message back to Node-RED. This is a simple way to send any custom data from your UI to Node-RED.
+
+There is also an empty `<div>` element with the id `more`. This is included in all uibuilder templates. It is used by the uibuilder example flows that output dynamic UI elements. You may find it convenient to use for your own purposes. You can add your own elements to it in the HTML or JavaScript code. The uibuilder example flows will add their own elements to it when they are run.
+
+In addition, the `more` div uses uibuilder's `uib-topic` special attribute which allows it to be used as a target for messages sent from Node-RED. This is a useful feature that allows you to easily update the content of the page without having to write any JavaScript code. Send a message containing `{ topic: 'more', payload: 'Hello World' }` to the `uibuilder` node and the content of the `more` div will be updated with "Hello World". Note that the payload can contain HTML. As an example, use an inject node with `msg.payload` set to use a JSONata expression like `"<b style='background-color:var(--error)'>Hello!</b> This is a message from Node-RED at " & $moment()`. Don't forget to set `msg.topic` to `more` so that the uibuilder client library knows where to send the message.
+
+> **WARNING**: Using the "more" topic completely overwrites the contents of the `more` div.
 
 ## Folders
 

@@ -4,7 +4,9 @@
 </header>
 
 <main>
-	<div id="more"><!-- '#more' is used as a parent for dynamic HTML content in examples --></div>
+	<!-- '#more' is used as a parent for dynamic HTML content in examples
+		 Also, send {topic:"more", payload:"Hello from <b>Node-RED</b>"} to auto-display the payload -->
+	<div id="more" uib-topic="more"></div>
 
 	<article>
 		<div>
